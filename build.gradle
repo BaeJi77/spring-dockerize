@@ -22,3 +22,11 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+bootJar {
+    layered()
+}
+
+bootBuildImage {
+    imageName = "spring-boot-dockerized:${project.version}"
+}
