@@ -30,3 +30,35 @@ bootJar {
 bootBuildImage {
     imageName = "spring-boot-dockerized:${project.version}"
 }
+
+task buildDockerImage {
+    dependsOn 'bootBuildImage'
+
+    println "projectVersion = ${project.version}"
+}
+
+ext {
+    buildVersion = project.hasProperty("buildVersion") ? project.getProperty("buildVersion") : "${project.version}"
+    containerProjectName = 'spring-boot-dockerized'
+    dockerImageName = "${containerProjectName}:${buildVersion}"
+    harborRepository = "HARBOR_URL/${dockerImageName}"
+}
+
+task buildHarborImage {
+    dependsOn 'bootBuildImage'
+
+    println("buildVersion = ${buildVersion}")
+    println("dockerImageName = ${dockerImageName}")
+    println("harborRepository = ${harborRepository}")
+
+    doLast {
+        exec {
+            commandLine "docker", "tag", "${dockerImageName}", "${harborRepository}"
+        }
+        exec {
+            commandLine "docker", "push", "${harborRepository}"
+        }
+        println("harbor push done!")
+    }
+
+}
