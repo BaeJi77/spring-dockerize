@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spring-dockerize-memory-limit-2g-pod
+spec:
+  containers:
+  - name: spring-dockerize-memory-limit-2g-pod
+    image: spring-boot-dockerized:0.0.1-SNAPSHOT
+    resources:
+      limits:
+        memory: "2G"  
+
